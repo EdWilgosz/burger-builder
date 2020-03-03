@@ -5,15 +5,15 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import SideDrawerIcon from '../SideDrawerIcon/SideDrawerIcon';
 
 const toolbar = props => (
-    <header className={classes.Toolbar}>
-        <SideDrawerIcon clicked={props.openSideDrawer} />
-        <div className={classes.Logo}>
-            <Logo />
-        </div>
-        <nav className={classes.DesktopOnly}>
-            <NavigationItems isAuthenticated={props.isAuth} />
-        </nav>
-    </header>
+  <header className={classes.Toolbar}>
+    <SideDrawerIcon clicked={props.openSideDrawer} />
+    <div className={classes.Logo}>
+      <Logo />
+    </div>
+    <nav className={classes.DesktopOnly}>
+      <NavigationItems isAuthenticated={props.isAuth} />
+    </nav>
+  </header>
 );
 
 export default toolbar;

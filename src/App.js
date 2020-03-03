@@ -8,15 +8,15 @@ import Logout from './containers/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
 
 const Checkout = React.lazy(() => {
-  return import('./containers/Checkout/Checkout')
+  return import('./containers/Checkout/Checkout');
 });
 
 const Orders = React.lazy(() => {
-  return import('./containers/Orders/Orders')
+  return import('./containers/Orders/Orders');
 });
 
 const Auth = React.lazy(() => {
-  return import('./containers/Auth/Auth')
+  return import('./containers/Auth/Auth');
 });
 
 const App = props => {
@@ -24,49 +24,46 @@ const App = props => {
   useEffect(() => {
     onTryAutoSignup();
   }, [onTryAutoSignup]);
-  
-    let routes = (
+
+  let routes = (
+    <React.Fragment>
+      <Route path='/auth' render={props => <Auth {...props} />} />
+      <Route path='/' exact component={BurgerBuilder} />
+      <Redirect to='/' />
+    </React.Fragment>
+  );
+
+  if (props.isAuthenticated) {
+    routes = (
       <React.Fragment>
-        <Route path="/auth" render={props => <Auth {...props} />} />
-        <Route path="/" exact component={BurgerBuilder} />
-        <Redirect to="/" />
+        <Route path='/checkout' render={props => <Checkout {...props} />} />
+        <Route path='/orders' render={props => <Orders {...props} />} />
+        <Route path='/logout' component={Logout} />
+        <Route path='/auth' render={props => <Auth {...props} />} />
+        <Route path='/' exact component={BurgerBuilder} />
+        <Redirect to='/' />
       </React.Fragment>
     );
+  }
 
-    if (props.isAuthenticated) {
-      routes = (
-        <React.Fragment>
-          <Route path="/checkout" render={props => <Checkout {...props} />} />
-          <Route path="/orders" render={props => <Orders {...props} />} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/auth" render={props => <Auth {...props} />} />
-          <Route path="/" exact component={BurgerBuilder} />
-          <Redirect to="/" />
-        </React.Fragment>
-      );
-    }
-    
-    return (
-      <div>
-        <Layout> 
-          <Suspense fallback={<p>Loading...</p>}>
-            {routes} 
-          </Suspense>
-        </Layout>
-      </div>
-    );
-}
+  return (
+    <div>
+      <Layout>
+        <Suspense fallback={<p>Loading...</p>}>{routes}</Suspense>
+      </Layout>
+    </div>
+  );
+};
 
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.token !== null
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     onTryAutoSignup: () => dispatch(actions.authCheckState())
-
   };
 };
 
